@@ -28,6 +28,8 @@ class sunriseEngine
 	@_radius
 	@_sunPosOffset
 
+	@_noiseVariation
+
 	@_throttle = 1000
 
 	constructor: (ctx, w, h) ->
@@ -37,9 +39,11 @@ class sunriseEngine
 		@_minusOffset = 0
 		@_plusOffset = 2
 
+
 	init: ()=>
 		@randomise()
 		@render()
+
 
 	randomNumber: (min, max, int = true) =>
 		if int is true
@@ -80,6 +84,7 @@ class sunriseEngine
 		@_gradScale = @randomNumber 0, 0.5, false
 		@_streakyness = @randomNumber 2,8
 		@_noiseLoops = @randomNumber 4,10
+		@_noiseVariation = @randomNumber 2, 7
 
 		@_skyCol = skyCols[Math.ceil(Math.random()*skyCols.length)-1]
 		@_horizonCol = horizonCols[Math.ceil(Math.random()*horizonCols.length)-1]
@@ -140,10 +145,25 @@ class sunriseEngine
 		console.log "make border"
 
 
+	addNoise: () =>
+		tempImage = @_ctx.getImageData 0, 0, @_w, @_h
+
+		for i in [0...tempImage.data.length]
+			if i%4 != 3
+				noise = @randomNumber -@_noiseVariation, @_noiseVariation
+				tempImage.data[i] += noise
+			else
+				tempImage.data[i]=255
+			i++
+
+		@_ctx.putImageData tempImage, 0, 0
+
+
 	render: () =>
 		@_ctx.clearRect 0,0,@_w,@_h
 		@randomise()
 		@makeGradient()
+		@addNoise()
 		@makeBorder()
 		@makeSun()
 

@@ -143,11 +143,14 @@
 
     sunriseEngine._sunPosOffset;
 
+    sunriseEngine._noiseVariation;
+
     sunriseEngine._throttle = 1000;
 
     function sunriseEngine(ctx, w, h) {
       this.saveSunrise = __bind(this.saveSunrise, this);
       this.render = __bind(this.render, this);
+      this.addNoise = __bind(this.addNoise, this);
       this.makeBorder = __bind(this.makeBorder, this);
       this.makeSun = __bind(this.makeSun, this);
       this.makeGradient = __bind(this.makeGradient, this);
@@ -218,6 +221,7 @@
       this._gradScale = this.randomNumber(0, 0.5, false);
       this._streakyness = this.randomNumber(2, 8);
       this._noiseLoops = this.randomNumber(4, 10);
+      this._noiseVariation = this.randomNumber(2, 7);
       this._skyCol = skyCols[Math.ceil(Math.random() * skyCols.length) - 1];
       this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
       this._radius = this.randomNumber((this._h / 10) * 2, (this._h / 10) * 3);
@@ -262,12 +266,29 @@
       return console.log("make border");
     };
 
+    sunriseEngine.prototype.addNoise = function() {
+      var i, noise, tempImage, _i, _ref;
+
+      tempImage = this._ctx.getImageData(0, 0, this._w, this._h);
+      for (i = _i = 0, _ref = tempImage.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (i % 4 !== 3) {
+          noise = this.randomNumber(-this._noiseVariation, this._noiseVariation);
+          tempImage.data[i] += noise;
+        } else {
+          tempImage.data[i] = 255;
+        }
+        i++;
+      }
+      return this._ctx.putImageData(tempImage, 0, 0);
+    };
+
     sunriseEngine.prototype.render = function() {
       var that;
 
       this._ctx.clearRect(0, 0, this._w, this._h);
       this.randomise();
       this.makeGradient();
+      this.addNoise();
       this.makeBorder();
       this.makeSun();
       that = this;
