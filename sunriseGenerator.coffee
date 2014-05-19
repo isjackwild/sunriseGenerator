@@ -10,6 +10,8 @@ ctx = cv.getContext('2d')
 #I decided to make a sunrise generator, because everyone loves a good sunrise, but everyone also loves a good lie-in.
 
 #I picked colours from sunrise photos
+
+#experiment with coloured suns also
 skyCols = [{r:241, g:250, b:255}, {r:9, g:91, b:184}, {r:179, g:44, b:44}, {r:69, g:65, b:104}, {r:40, g:171, b:197}, {r:128, g:172, b:219}, {r:0, g:80, b:146}, {r:47, g:44, b:67}, {r:42, g:42, b:97}, {r:131, g:63, b:24}, {r:58, g:182, b:196}, {r:39, g:135, b:254}]
 horizonCols = [{r:242, g:92, b:76}, {r:253, g:141, b:24}, {r:252, g:254, b:112}, {r:253, g:64, b:103}, {r:252, g:230, b:149}, {r:255, g:224, b:55}, {r:251, g:210, b:92}, {r:250, g:191, b:70}, {r:179, g:69, b:1}, {r:248, g:248, b:164}, {r:255, g:56, b:105}, {r:255, g:128, b:22}]
 
@@ -87,8 +89,9 @@ class sunriseEngine
 		@_minusOffset = @randomNumber 1, 3
 		@_plusOffset = @randomNumber 2, 5
 
+		@_gradScale = @randomNumber 0, 0.33, false
 		@_streakyness = @randomNumber 4,12
-		@_noiseVariation = @randomNumber 5, 12
+		@_noiseVariation = @randomNumber 3, 8
 
 		@_skyCol = skyCols[Math.ceil(Math.random()*skyCols.length)-1]
 		@_horizonCol = horizonCols[Math.ceil(Math.random()*horizonCols.length)-1]
@@ -164,6 +167,7 @@ class sunriseEngine
 		@_ctx.putImageData tempImage, 0, 0
 
 		#I noticed that lighter areas have more noise, so I took this into account
+		#WRITE THIS CODE----take average 
 
 
 	render: () =>
@@ -177,6 +181,7 @@ class sunriseEngine
 		#a new sunrise is rendered every second.
 		that = @
 		setTimeout ->
+			#impliment fallback
 			window.requestAnimationFrame that.render
 		, 1000
 

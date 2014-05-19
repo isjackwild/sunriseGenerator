@@ -218,8 +218,9 @@
       this._borderBlur = this.randomNumber(5, 12);
       this._minusOffset = this.randomNumber(1, 3);
       this._plusOffset = this.randomNumber(2, 5);
+      this._gradScale = this.randomNumber(0, 0.33, false);
       this._streakyness = this.randomNumber(4, 12);
-      this._noiseVariation = this.randomNumber(5, 12);
+      this._noiseVariation = this.randomNumber(3, 8);
       this._skyCol = skyCols[Math.ceil(Math.random() * skyCols.length) - 1];
       this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
       this._radius = this.randomNumber(this._h / 6, (this._h / 6) * 1.33);
