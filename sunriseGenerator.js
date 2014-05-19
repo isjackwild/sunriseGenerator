@@ -12,9 +12,109 @@
 
   ctx = cv.getContext('2d');
 
-  skyCols = ["rgb(241, 250, 255)", "rgb(9, 91, 184)", "rgb(179, 44, 44)", "rgb(69, 65, 104)", "rgb(40, 171, 197)", "rgb(128, 172, 219)", "rgb(0, 80, 146)", "rgb(47, 44, 67)", "rgb(42, 42, 97)", "rgb(131, 63, 24)", "rgb(58, 182, 196)", "rgb(39, 135, 254)"];
+  skyCols = [
+    {
+      r: 241,
+      g: 250,
+      b: 255
+    }, {
+      r: 9,
+      g: 91,
+      b: 184
+    }, {
+      r: 179,
+      g: 44,
+      b: 44
+    }, {
+      r: 69,
+      g: 65,
+      b: 104
+    }, {
+      r: 40,
+      g: 171,
+      b: 197
+    }, {
+      r: 128,
+      g: 172,
+      b: 219
+    }, {
+      r: 0,
+      g: 80,
+      b: 146
+    }, {
+      r: 47,
+      g: 44,
+      b: 67
+    }, {
+      r: 42,
+      g: 42,
+      b: 97
+    }, {
+      r: 131,
+      g: 63,
+      b: 24
+    }, {
+      r: 58,
+      g: 182,
+      b: 196
+    }, {
+      r: 39,
+      g: 135,
+      b: 254
+    }
+  ];
 
-  horizonCols = ["rgb(242, 92, 76)", "rgb(253, 141, 24)", "rgb(252, 254, 112)", "rgb(253, 64, 103)", "rgb(252, 230, 149)", "rgb(255, 224, 55)", "rgb(251, 210, 92)", "rgb(250, 191, 70)", "rgb(179, 69, 1)", "rgb(248, 248, 164)", "rgb(255, 56, 105)", "rgb(255, 128, 22)"];
+  horizonCols = [
+    {
+      r: 242,
+      g: 92,
+      b: 76
+    }, {
+      r: 253,
+      g: 141,
+      b: 24
+    }, {
+      r: 252,
+      g: 254,
+      b: 112
+    }, {
+      r: 253,
+      g: 64,
+      b: 103
+    }, {
+      r: 252,
+      g: 230,
+      b: 149
+    }, {
+      r: 255,
+      g: 224,
+      b: 55
+    }, {
+      r: 251,
+      g: 210,
+      b: 92
+    }, {
+      r: 250,
+      g: 191,
+      b: 70
+    }, {
+      r: 179,
+      g: 69,
+      b: 1
+    }, {
+      r: 248,
+      g: 248,
+      b: 164
+    }, {
+      r: 255,
+      g: 56,
+      b: 105
+    }, {
+      r: 255,
+      g: 128,
+      b: 22
+    }
+  ];
 
   sunriseEngine = (function() {
     sunriseEngine._borderMinThickness;
@@ -29,24 +129,37 @@
 
     sunriseEngine._streakyness;
 
+    sunriseEngine._minusOffset;
+
+    sunriseEngine._plusOffset;
+
     sunriseEngine._noiseLoops;
 
     sunriseEngine._skyCol;
 
     sunriseEngine._horizonCol;
 
-    sunriseEngine._throttle = 5000;
+    sunriseEngine._radius;
+
+    sunriseEngine._sunPosOffset;
+
+    sunriseEngine._throttle = 1000;
 
     function sunriseEngine(ctx, w, h) {
+      this.saveSunrise = __bind(this.saveSunrise, this);
       this.render = __bind(this.render, this);
       this.makeBorder = __bind(this.makeBorder, this);
       this.makeSun = __bind(this.makeSun, this);
       this.makeGradient = __bind(this.makeGradient, this);
       this.randomise = __bind(this.randomise, this);
+      this.lerpColour = __bind(this.lerpColour, this);
+      this.convertToRange = __bind(this.convertToRange, this);
       this.randomNumber = __bind(this.randomNumber, this);
       this.init = __bind(this.init, this);      this._ctx = ctx;
       this._w = w;
       this._h = h;
+      this._minusOffset = 0;
+      this._plusOffset = 2;
     }
 
     sunriseEngine.prototype.init = function() {
@@ -54,19 +167,50 @@
       return this.render();
     };
 
-    sunriseEngine.prototype.randomNumber = function(min, max, integer) {
-      if (integer == null) {
-        integer = true;
+    sunriseEngine.prototype.randomNumber = function(min, max, int) {
+      if (int == null) {
+        int = true;
       }
-      if (integer === true) {
-        return Math.floor(Math.random() * (min - max + 1) + min);
-      } else if (integer === false) {
-        return Math.random() * (min - max) + min;
+      if (int === true) {
+        return Math.ceil(Math.random() * (max - min) + min);
+      } else {
+        return Math.random() * (max - min) + min;
       }
     };
 
+    sunriseEngine.prototype.convertToRange = function(value, srcRange, dstRange) {
+      var adjValue, dstMax, srcMax;
+
+      if (value < srcRange[0]) {
+        return dstRange[0];
+      } else if (value > srcRange[1]) {
+        return dstRange[1];
+      } else {
+        srcMax = srcRange[1] - srcRange[0];
+        dstMax = dstRange[1] - dstRange[0];
+        adjValue = value - srcRange[0];
+        return (adjValue * dstMax / srcMax) + dstRange[0];
+      }
+    };
+
+    sunriseEngine.prototype.lerpColour = function(control, from, to) {
+      var result, resultB, resultG, resultR;
+
+      resultR = from.r + (to.r - from.r) * control;
+      resultG = from.g + (to.g - from.g) * control;
+      resultB = from.b + (to.b - from.b) * control;
+      resultR = Math.ceil(resultR);
+      resultG = Math.ceil(resultG);
+      resultB = Math.ceil(resultB);
+      result = {
+        r: resultR,
+        g: resultG,
+        b: resultB
+      };
+      return result;
+    };
+
     sunriseEngine.prototype.randomise = function() {
-      console.log("randomise");
       this._borderMinThickness = this.randomNumber(5, 20);
       this._borderFeather = this.randomNumber(10, 20);
       this._borderMaxThickness = this._borderMinThickness + this._borderFeather;
@@ -75,31 +219,43 @@
       this._streakyness = this.randomNumber(2, 8);
       this._noiseLoops = this.randomNumber(4, 10);
       this._skyCol = skyCols[Math.ceil(Math.random() * skyCols.length) - 1];
-      return this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
+      this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
+      this._radius = this.randomNumber((this._h / 10) * 2, (this._h / 10) * 3);
+      return this._sunPosOffset = this.randomNumber(-this._h / 10, this._h / 10);
     };
 
     sunriseEngine.prototype.makeGradient = function() {
-      var colourStep, i, pixel, tempImage, _i, _len, _ref;
+      var colourJump, colourStep, i, lerpControl, tempCol, tempColRGB, _i, _ref, _results;
 
-      console.log("make grad");
       colourStep = 0;
-      tempImage = this._ctx.createImageData(this._w, this._h);
-      i = 0;
-      _ref = tempImage.data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        pixel = _ref[_i];
-        if (i % 4 !== 3) {
-          tempImage.data[i] = 10;
+      _results = [];
+      for (i = _i = 0, _ref = this._h; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        colourJump = this.randomNumber(-(this._streakyness + this._minusOffset), this._streakyness + this._plusOffset);
+        colourStep += colourJump;
+        lerpControl = this.convertToRange(colourStep, [0, this._h], [0 - this._gradScale, 1 + this._gradScale]);
+        if (lerpControl < 0) {
+          tempCol = this._skyCol;
+        } else if (lerpControl > 1) {
+          tempCol = this._horizonCol;
         } else {
-          tempImage.data[i] = 255;
+          tempCol = this.lerpColour(lerpControl, this._skyCol, this._horizonCol);
         }
-        i++;
+        tempColRGB = "rgb(" + tempCol.r + "," + tempCol.g + "," + tempCol.b + ")";
+        this._ctx.strokeStyle = tempColRGB;
+        this._ctx.beginPath();
+        this._ctx.moveTo(0, i);
+        this._ctx.lineTo(this._w, i);
+        _results.push(this._ctx.stroke());
       }
-      return this._ctx.putImageData(tempImage, 0, 0);
+      return _results;
     };
 
     sunriseEngine.prototype.makeSun = function() {
-      return console.log("make sun");
+      console.log("make sun");
+      this._ctx.beginPath();
+      this._ctx.arc(this._w / 2, (this._h / 2) + this._sunPosOffset, this._radius, 0, 2 * Math.PI);
+      this._ctx.fillStyle = "#FFFFFF";
+      return this._ctx.fill();
     };
 
     sunriseEngine.prototype.makeBorder = function() {
@@ -107,9 +263,26 @@
     };
 
     sunriseEngine.prototype.render = function() {
+      var that;
+
+      this._ctx.clearRect(0, 0, this._w, this._h);
+      this.randomise();
       this.makeGradient();
       this.makeBorder();
-      return this.makeSun();
+      this.makeSun();
+      that = this;
+      return setTimeout(function() {
+        return window.requestAnimationFrame(that.render);
+      }, 2000);
+    };
+
+    sunriseEngine.prototype.saveSunrise = function() {
+      var dataURL, saveWindow;
+
+      console.log('save');
+      dataURL = cv.toDataURL("image/png");
+      saveWindow = window.open();
+      return saveWindow.document.write('<img src="' + dataURL + '"/>');
     };
 
     return sunriseEngine;
@@ -120,7 +293,11 @@
     var coverArtworkEngine;
 
     coverArtworkEngine = new sunriseEngine(ctx, cv.width, cv.height);
-    return coverArtworkEngine.init();
+    coverArtworkEngine.init();
+    return document.getElementById('sunriseGenerator').onclick = function() {
+      console.log('click');
+      return coverArtworkEngine.saveSunrise();
+    };
   });
 
 }).call(this);
