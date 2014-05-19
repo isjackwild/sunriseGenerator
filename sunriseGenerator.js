@@ -6,9 +6,11 @@
 
   cv = document.getElementById('sunriseGenerator');
 
-  cv.width = window.innerWidth;
+  cv.width = screen.width;
 
-  cv.height = window.innerHeight;
+  cv.height = screen.height;
+
+  console.log(screen.width, screen.height, "<<");
 
   ctx = cv.getContext('2d');
 
@@ -224,8 +226,8 @@
       this._noiseVariation = this.randomNumber(2, 7);
       this._skyCol = skyCols[Math.ceil(Math.random() * skyCols.length) - 1];
       this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
-      this._radius = this.randomNumber((this._h / 10) * 2, (this._h / 10) * 3);
-      return this._sunPosOffset = this.randomNumber(-this._h / 10, this._h / 10);
+      this._radius = this.randomNumber(this._h / 6, (this._h / 6) * 1.33);
+      return this._sunPosOffset = this.randomNumber(0, this._h / 4);
     };
 
     sunriseEngine.prototype.makeGradient = function() {
@@ -255,7 +257,6 @@
     };
 
     sunriseEngine.prototype.makeSun = function() {
-      console.log("make sun");
       this._ctx.beginPath();
       this._ctx.arc(this._w / 2, (this._h / 2) + this._sunPosOffset, this._radius, 0, 2 * Math.PI);
       this._ctx.fillStyle = "#FFFFFF";
@@ -294,7 +295,7 @@
       that = this;
       return setTimeout(function() {
         return window.requestAnimationFrame(that.render);
-      }, 2000);
+      }, 5000);
     };
 
     sunriseEngine.prototype.saveSunrise = function() {
