@@ -135,8 +135,6 @@
 
     sunriseEngine._plusOffset;
 
-    sunriseEngine._noiseLoops;
-
     sunriseEngine._skyCol;
 
     sunriseEngine._horizonCol;
@@ -163,8 +161,6 @@
       this.init = __bind(this.init, this);      this._ctx = ctx;
       this._w = w;
       this._h = h;
-      this._minusOffset = 0;
-      this._plusOffset = 2;
     }
 
     sunriseEngine.prototype.init = function() {
@@ -220,10 +216,10 @@
       this._borderFeather = this.randomNumber(10, 20);
       this._borderMaxThickness = this._borderMinThickness + this._borderFeather;
       this._borderBlur = this.randomNumber(5, 12);
-      this._gradScale = this.randomNumber(0, 0.5, false);
-      this._streakyness = this.randomNumber(2, 8);
-      this._noiseLoops = this.randomNumber(4, 10);
-      this._noiseVariation = this.randomNumber(2, 7);
+      this._minusOffset = this.randomNumber(1, 3);
+      this._plusOffset = this.randomNumber(2, 5);
+      this._streakyness = this.randomNumber(4, 12);
+      this._noiseVariation = this.randomNumber(5, 12);
       this._skyCol = skyCols[Math.ceil(Math.random() * skyCols.length) - 1];
       this._horizonCol = horizonCols[Math.ceil(Math.random() * horizonCols.length) - 1];
       this._radius = this.randomNumber(this._h / 6, (this._h / 6) * 1.33);
@@ -238,7 +234,7 @@
       for (i = _i = 0, _ref = this._h; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         colourJump = this.randomNumber(-(this._streakyness + this._minusOffset), this._streakyness + this._plusOffset);
         colourStep += colourJump;
-        lerpControl = this.convertToRange(colourStep, [0, this._h], [0 - this._gradScale, 1 + this._gradScale]);
+        lerpControl = this.convertToRange(colourStep, [0, this._h], [-this._gradScale, 1 + this._gradScale]);
         if (lerpControl < 0) {
           tempCol = this._skyCol;
         } else if (lerpControl > 1) {
@@ -268,15 +264,26 @@
     };
 
     sunriseEngine.prototype.addNoise = function() {
-      var i, noise, tempImage, _i, _ref;
+      var brightness, i, noise, tempImage, _i, _ref;
 
       tempImage = this._ctx.getImageData(0, 0, this._w, this._h);
+      brightness = 0;
       for (i = _i = 0, _ref = tempImage.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         if (i % 4 !== 3) {
-          noise = this.randomNumber(-this._noiseVariation, this._noiseVariation);
-          tempImage.data[i] += noise;
+          brightness += tempImage.data[i];
         } else {
+          brightness /= 3;
           tempImage.data[i] = 255;
+          noise = this.randomNumber(-this._noiseVariation, this._noiseVariation);
+          noise *= this.convertToRange(brightness, [0, 255], [0.2, 1]);
+          tempImage.data[i - 1] += noise;
+          noise = this.randomNumber(-this._noiseVariation, this._noiseVariation);
+          noise *= this.convertToRange(brightness, [0, 255], [0.2, 1]);
+          tempImage.data[i - 2] += noise;
+          noise = this.randomNumber(-this._noiseVariation, this._noiseVariation);
+          noise *= this.convertToRange(brightness, [0, 255], [0.2, 1]);
+          tempImage.data[i - 1] += noise;
+          brightness = 0;
         }
         i++;
       }
@@ -295,7 +302,7 @@
       that = this;
       return setTimeout(function() {
         return window.requestAnimationFrame(that.render);
-      }, 5000);
+      }, 1000);
     };
 
     sunriseEngine.prototype.saveSunrise = function() {
