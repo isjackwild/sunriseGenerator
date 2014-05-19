@@ -156,11 +156,13 @@ class sunriseEngine
 			window.requestAnimationFrame that.render
 		, 5000
 
+
 	saveSunrise: () =>
 		console.log 'save'
 		dataURL = cv.toDataURL "image/png"
 		saveWindow = window.open()
-		saveWindow.document.write '<img src="'+dataURL+'"/>'
+		saveWindow.document.write '<html><head><title>Right Click > Save As</title><link rel="stylesheet" type="text/css" href="saveStyle.css"></head><body> <img src="'+dataURL+'"/> </body></html>'
+
 
 
 $(window).load =>
