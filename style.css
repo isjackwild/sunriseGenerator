@@ -13,7 +13,7 @@ html, body {
 	margin: 0;
 	background: #fff;
 	overflow: hidden;
-	font-family: 'Cousine';
+	font-family: 'Cousine', Courier New, monospaced;
 }
 
 
@@ -57,8 +57,8 @@ canvas {
 	z-index: 3;
 	padding: 20px;
 	padding-bottom: 5px;
-	border-bottom: solid 2px;
-	background: rgba(255,255,255,0.33);
+	/*border-bottom: solid 2px;*/
+	/*background: rgba(255,255,255,0.33);*/
 	-webkit-transform-origin: top left;
 	-moz-transform-origin: top left;
 	-ms-transform-origin: top left;
@@ -103,6 +103,7 @@ h3 {
 	font-size: 14px;
 	line-height: 16px;
 	text-transform: uppercase;
+	font-family: Helvetica, Arial, sans-serif
 }
 
 #mainTextWrap {
@@ -117,7 +118,8 @@ h1 {
 	font-size: 36px;
 	line-height: 36px;
 	width: 50%;
-	letter-spacing: -0.033em;
+	text-transform: uppercase;
+	font-family: Helvetica, Arial, sans-serif
 }
 
 .titleCol {
@@ -138,6 +140,7 @@ h2 {
 	font-size: 16px;
 	line-height: 18px;
 	text-transform: uppercase;
+	font-family: Helvetica, Arial, sans-serif
 }
 
 p {
