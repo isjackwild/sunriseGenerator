@@ -199,12 +199,12 @@ class sunriseEngine
 
 
 $(window).load =>
-	coverArtworkEngine = new sunriseEngine ctx, cv.width, cv.height
-	coverArtworkEngine.init()
+	sunEngine = new sunriseEngine ctx, cv.width, cv.height
+	sunEngine.init()
 
 	document.getElementById('sunriseGenerator').onclick = ()=>
 		console.log 'click'
-		coverArtworkEngine.saveSunrise()
+		sunEngine.saveSunrise()
 
 
 $('#closeAbout').click =>

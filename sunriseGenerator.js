@@ -327,13 +327,13 @@
   })();
 
   $(window).load(function() {
-    var coverArtworkEngine;
+    var sunEngine;
 
-    coverArtworkEngine = new sunriseEngine(ctx, cv.width, cv.height);
-    coverArtworkEngine.init();
+    sunEngine = new sunriseEngine(ctx, cv.width, cv.height);
+    sunEngine.init();
     return document.getElementById('sunriseGenerator').onclick = function() {
       console.log('click');
-      return coverArtworkEngine.saveSunrise();
+      return sunEngine.saveSunrise();
     };
   });
 
