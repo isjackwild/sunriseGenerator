@@ -312,12 +312,10 @@
     };
 
     sunriseEngine.prototype.saveSunrise = function() {
-      var dataURL, saveWindow;
-
       console.log('save');
-      dataURL = cv.toDataURL("image/png");
-      saveWindow = window.open();
-      return saveWindow.document.write('<html><head><title>Right Click > Save As</title><link rel="stylesheet" type="text/css" href="saveStyle.css"></head><body> <img src="' + dataURL + '"/> </body></html>');
+      return cv.toBlob(function(blob) {
+        return saveAs(blob, 'sunrise.png');
+      });
     };
 
     sunriseEngine.prototype.fillInSides = function() {

@@ -35,7 +35,7 @@ canvas {
 	width: 100%;
 	position: absolute;
 	top: 0;
-	background: red;
+	background: white;
 	z-index: 1;
 }
 
@@ -44,7 +44,7 @@ canvas {
 	width: 100%;
 	position: absolute;
 	bottom: 0;
-	background: blue;
+	background: white;
 	z-index: 1;
 }
 

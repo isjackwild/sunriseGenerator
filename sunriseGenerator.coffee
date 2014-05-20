@@ -191,10 +191,11 @@ class sunriseEngine
 	#on click the sunrise is opened as a PNG in a new window, which can be saved. It is the size of the device screen, so can be used as a wallpapaer
 	saveSunrise: () =>
 		console.log 'save'
-		dataURL = cv.toDataURL "image/png"
-		saveWindow = window.open()
-		saveWindow.document.write '<html><head><title>Right Click > Save As</title><link rel="stylesheet" type="text/css" href="saveStyle.css"></head><body> <img src="'+dataURL+'"/> </body></html>'
-
+		# dataURL = cv.toDataURL "image/png"
+		# saveWindow = window.open()
+		# saveWindow.document.write '<html><head><title>Right Click > Save As</title><link rel="stylesheet" type="text/css" href="saveStyle.css"></head><body> <img src="'+dataURL+'"/> </body></html>'
+		cv.toBlob (blob) ->
+			saveAs blob, 'sunrise.png'
 
 	fillInSides: () =>
 		topFill.style.background = "rgb(" + @_skyCol.r + "," + @_skyCol.g + "," + @_skyCol.b + ")"
