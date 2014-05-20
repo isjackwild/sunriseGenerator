@@ -308,7 +308,7 @@
       that = this;
       return setTimeout(function() {
         return window.requestAnimationFrame(that.render);
-      }, 1000);
+      }, 1500);
     };
 
     sunriseEngine.prototype.saveSunrise = function() {

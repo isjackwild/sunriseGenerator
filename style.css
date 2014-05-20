@@ -14,6 +14,7 @@ html, body {
 	background: #fff;
 	overflow: hidden;
 	font-family: 'Cousine', Courier New, monospaced;
+	color: white;
 }
 
 
@@ -64,11 +65,11 @@ canvas {
 	-ms-transform-origin: top left;
 	-o-transform-origin: top left;
 	transform-origin: top left;
-	-webkit-transition: -webkit-transform 0.33s, opacity 0.33s, background 0.33s;
-	-moz-transition: -moz-transform 0.33s, opacity 0.33s, background 0.33s;
-	-ms-transition: -ms-transform 0.33s, opacity 0.33s, background 0.33s;
-	-o-transition: -o-transform 0.33s, opacity 0.33s, background 0.33s;
-	transition: transform 0.33s, opacity 0.33s, background 0.33s;
+	-webkit-transition: -webkit-transform 0.33s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.33s, background 0.33s;
+	-moz-transition: -moz-transform 0.33s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.33s, background 0.33s;
+	-ms-transition: -ms-transform 0.33s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.33s, background 0.33s;
+	-o-transition: -o-transform 0.33s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.33s, background 0.33s;
+	transition: transform 0.33s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.33s, background 0.33s;
 }
 
 #about.closed {
@@ -156,6 +157,6 @@ p.introText {
 }
 
 a {
-	color: black;
+	color: white;
 }
 

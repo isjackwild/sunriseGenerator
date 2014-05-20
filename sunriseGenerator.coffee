@@ -183,7 +183,7 @@ class sunriseEngine
 		that = @
 		setTimeout ->
 			window.requestAnimationFrame that.render
-		, 1000
+		, 1500
 
 
 	#Click to save
