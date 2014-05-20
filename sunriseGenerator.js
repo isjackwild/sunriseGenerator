@@ -312,7 +312,6 @@
     };
 
     sunriseEngine.prototype.saveSunrise = function() {
-      console.log('save');
       return cv.toBlob(function(blob) {
         return saveAs(blob, 'sunrise.png');
       });
