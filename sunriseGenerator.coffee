@@ -1,10 +1,12 @@
 cv = document.getElementById 'sunriseGenerator'
 cv.width = screen.width
 cv.height = screen.height
-
-console.log screen.width, screen.height, "<<"
-
 ctx = cv.getContext('2d')
+
+
+topFill = document.getElementById 'topFill'
+bottomFill = document.getElementById 'bottomFill'
+
 
 #I made this as a self-initiated learning task to learn more about manipulating image pixel array data and to experiment with colour. I made the first version in Processing, and then decided to write it again in Javascript in canvas, because why not. 
 #I decided to make a sunrise generator, because everyone loves a good sunrise, but everyone also loves a good lie-in.
@@ -28,6 +30,7 @@ class sunriseEngine
 
 	@_skyCol
 	@_horizonCol
+	@_finalCol
 
 	@_radius
 	@_sunPosOffset
@@ -123,6 +126,9 @@ class sunriseEngine
 			@_ctx.moveTo(0,i)
 			@_ctx.lineTo(@_w,i)
 			@_ctx.stroke()
+
+			if i is @_h-1
+				@_finalCol = tempCol
 		
 			
 	makeSun: () =>
@@ -131,10 +137,6 @@ class sunriseEngine
 		@_ctx.arc(@_w/2, (@_h/2)+@_sunPosOffset, @_radius, 0, 2*Math.PI)
 		@_ctx.fillStyle = "#FFFFFF"
 		@_ctx.fill()
-
-
-	makeBorder: () =>
-		console.log "make border"
 
 
 	addNoise: () =>
@@ -175,8 +177,8 @@ class sunriseEngine
 		@randomise()
 		@makeGradient()
 		@addNoise()
-		@makeBorder()
 		@makeSun()
+		@fillInSides()
 
 		#a new sunrise is rendered every second.
 		that = @
@@ -192,6 +194,11 @@ class sunriseEngine
 		dataURL = cv.toDataURL "image/png"
 		saveWindow = window.open()
 		saveWindow.document.write '<html><head><title>Right Click > Save As</title><link rel="stylesheet" type="text/css" href="saveStyle.css"></head><body> <img src="'+dataURL+'"/> </body></html>'
+
+
+	fillInSides: () =>
+		topFill.style.background = "rgb(" + @_skyCol.r + "," + @_skyCol.g + "," + @_skyCol.b + ")"
+		bottomFill.style.background = "rgb(" + @_finalCol.r + "," + @_finalCol.g + "," + @_finalCol.b + ")"
 
 
 

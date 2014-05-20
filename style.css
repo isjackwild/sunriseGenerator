@@ -1,0 +1,39 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	background: #fff;
+	overflow: hidden;
+}
+
+
+canvas {
+    width: 100%;
+    margin: auto;
+    position: absolute;
+}
+
+#sunriseGenerator {
+	z-index: 2;
+    top:0;bottom:0; /* vertical center */
+    left:0;right:0; /* horizontal center */
+}
+
+#topFill {
+	height: 50%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	background: red;
+	z-index: 1;
+}
+
+#bottomFill {
+	height: 50%;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	background: blue;
+	z-index: 1;
+}
