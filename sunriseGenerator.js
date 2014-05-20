@@ -340,4 +340,15 @@
     };
   });
 
+  $('#closeAbout').click(function() {
+    console.log("close");
+    $('#about').toggleClass('closed');
+    return setTimeout(function() {
+      return $('#about').bind("click", function() {
+        $('#about').toggleClass('closed');
+        return $('#about').unbind("click");
+      });
+    }, 0);
+  });
+
 }).call(this);

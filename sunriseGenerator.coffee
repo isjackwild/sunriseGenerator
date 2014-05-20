@@ -209,3 +209,14 @@ $(window).load =>
 	document.getElementById('sunriseGenerator').onclick = ()=>
 		console.log 'click'
 		coverArtworkEngine.saveSunrise()
+
+
+$('#closeAbout').click =>
+	console.log "close"
+	$('#about').toggleClass 'closed'
+
+	setTimeout ->
+		$('#about').bind "click", ->
+			$('#about').toggleClass 'closed'
+			$('#about').unbind "click"
+	,0
