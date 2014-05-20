@@ -21,6 +21,7 @@ canvas {
     width: 100%;
     margin: auto;
     position: absolute;
+    cursor: alias;
 }
 
 #sunriseGenerator {
@@ -49,7 +50,7 @@ canvas {
 
 #about {
 	/*height: 20%;*/
-	width: 66%;
+	width: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -57,7 +58,7 @@ canvas {
 	padding: 20px;
 	padding-bottom: 5px;
 	border-bottom: solid 2px;
-	/*background: rgba(255,255,255,0.5);*/
+	background: rgba(255,255,255,0.33);
 	-webkit-transform-origin: top left;
 	-moz-transform-origin: top left;
 	-ms-transform-origin: top left;
@@ -121,13 +122,13 @@ h1 {
 .titleCol {
 	width: 50%;
 	float: left;
-	padding-right: 16px;
+	padding-right: 20px;
 }
 
 .textCol {
 	width: 25%;
 	float: left;
-	padding-right: 16px;
+	padding-right: 20px;
 }
 
 h2 {
@@ -153,3 +154,4 @@ p.introText {
 a {
 	color: black;
 }
+
