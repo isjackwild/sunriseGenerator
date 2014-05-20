@@ -121,35 +121,27 @@
   ];
 
   sunriseEngine = (function() {
-    sunriseEngine._borderMinThickness;
+    sunriseEngine.prototype._gradScale = null;
 
-    sunriseEngine._borderFeather;
+    sunriseEngine.prototype._streakyness = null;
 
-    sunriseEngine._borderMaxThickness;
+    sunriseEngine.prototype._minusOffset = null;
 
-    sunriseEngine._borderBlur;
+    sunriseEngine.prototype._plusOffset = null;
 
-    sunriseEngine._gradScale;
+    sunriseEngine.prototype._skyCol = null;
 
-    sunriseEngine._streakyness;
+    sunriseEngine.prototype._horizonCol = null;
 
-    sunriseEngine._minusOffset;
+    sunriseEngine.prototype._finalCol = null;
 
-    sunriseEngine._plusOffset;
+    sunriseEngine.prototype._radius = null;
 
-    sunriseEngine._skyCol;
+    sunriseEngine.prototype._sunPosOffset = null;
 
-    sunriseEngine._horizonCol;
+    sunriseEngine.prototype._noiseVariation = null;
 
-    sunriseEngine._finalCol;
-
-    sunriseEngine._radius;
-
-    sunriseEngine._sunPosOffset;
-
-    sunriseEngine._noiseVariation;
-
-    sunriseEngine._throttle = 1000;
+    sunriseEngine.prototype._throttle = 1500;
 
     function sunriseEngine(ctx, w, h) {
       this.fillInSides = __bind(this.fillInSides, this);
@@ -216,10 +208,6 @@
     };
 
     sunriseEngine.prototype.randomise = function() {
-      this._borderMinThickness = this.randomNumber(5, 20);
-      this._borderFeather = this.randomNumber(10, 20);
-      this._borderMaxThickness = this._borderMinThickness + this._borderFeather;
-      this._borderBlur = this.randomNumber(5, 12);
       this._minusOffset = this.randomNumber(1, 3);
       this._plusOffset = this.randomNumber(2, 5);
       this._gradScale = this.randomNumber(0, 0.33, false);
@@ -308,7 +296,7 @@
       that = this;
       return setTimeout(function() {
         return window.requestAnimationFrame(that.render);
-      }, 1500);
+      }, this._throttle);
     };
 
     sunriseEngine.prototype.saveSunrise = function() {

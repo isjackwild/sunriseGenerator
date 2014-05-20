@@ -15,26 +15,21 @@ horizonCols = [{r:242, g:92, b:76}, {r:253, g:141, b:24}, {r:252, g:254, b:112},
 
 #The sunrise engine
 class sunriseEngine
-	@_borderMinThickness
-	@_borderFeather
-	@_borderMaxThickness
-	@_borderBlur
+	_gradScale: null
+	_streakyness: null
+	_minusOffset: null
+	_plusOffset: null
 
-	@_gradScale
-	@_streakyness
-	@_minusOffset
-	@_plusOffset
+	_skyCol: null
+	_horizonCol: null
+	_finalCol: null
 
-	@_skyCol
-	@_horizonCol
-	@_finalCol
+	_radius: null
+	_sunPosOffset: null
 
-	@_radius
-	@_sunPosOffset
+	_noiseVariation: null
 
-	@_noiseVariation
-
-	@_throttle = 1000
+	_throttle: 1500
 
 	constructor: (ctx, w, h) ->
 		@_ctx = ctx
@@ -82,12 +77,7 @@ class sunriseEngine
 
 
 	#I randomise the inputs each time, after a lot of experimenting about the ranges to set to create pleasant outcomes.
-	randomise: () =>
-		@_borderMinThickness = @randomNumber 5,20
-		@_borderFeather = @randomNumber 10,20
-		@_borderMaxThickness = @_borderMinThickness + @_borderFeather
-		@_borderBlur = @randomNumber 5,12
-		
+	randomise: () =>		
 		@_minusOffset = @randomNumber 1, 3
 		@_plusOffset = @randomNumber 2, 5
 
@@ -183,7 +173,7 @@ class sunriseEngine
 		that = @
 		setTimeout ->
 			window.requestAnimationFrame that.render
-		, 1500
+		, @_throttle
 
 
 	#Click to save
