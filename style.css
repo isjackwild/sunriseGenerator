@@ -17,6 +17,9 @@ html, body {
 	color: white;
 }
 
+.dg {
+	z-index: 100 !important;
+}
 
 canvas {
     width: 100%;

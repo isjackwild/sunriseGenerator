@@ -192,6 +192,15 @@ $(window).load =>
 	sunEngine = new sunriseEngine ctx, cv.width, cv.height
 	sunEngine.init()
 
+	gui = new dat.GUI()
+	gui.add sunEngine, '_throttle'
+	gui.add(sunEngine,'_gradScale',).listen()
+	gui.add(sunEngine,'_streakyness',).listen()
+	gui.add(sunEngine,'_minusOffset',).listen()
+	gui.add(sunEngine,'_plusOffset',).listen()
+	gui.add(sunEngine,'_noiseVariation',).listen()
+
+
 	document.getElementById('sunriseGenerator').onclick = ()=>
 		console.log 'click'
 		sunEngine.saveSunrise()

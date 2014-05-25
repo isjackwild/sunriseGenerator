@@ -315,10 +315,17 @@
   })();
 
   $(window).load(function() {
-    var sunEngine;
+    var gui, sunEngine;
 
     sunEngine = new sunriseEngine(ctx, cv.width, cv.height);
     sunEngine.init();
+    gui = new dat.GUI();
+    gui.add(sunEngine, '_throttle');
+    gui.add(sunEngine, '_gradScale').listen();
+    gui.add(sunEngine, '_streakyness').listen();
+    gui.add(sunEngine, '_minusOffset').listen();
+    gui.add(sunEngine, '_plusOffset').listen();
+    gui.add(sunEngine, '_noiseVariation').listen();
     return document.getElementById('sunriseGenerator').onclick = function() {
       console.log('click');
       return sunEngine.saveSunrise();
